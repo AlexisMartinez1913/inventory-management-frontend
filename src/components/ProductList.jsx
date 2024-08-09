@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { NumericFormat } from 'react-number-format';
+import { Link } from 'react-router-dom';
 
 function ProductList() {
     const urlBase = 'http://localhost:8081/fi-app/products';
@@ -34,6 +35,7 @@ function ProductList() {
                         <th scope="col">Category</th>
                         <th scope="col">Price</th>
                         <th scope="col">Stock</th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -59,6 +61,16 @@ function ProductList() {
 
                                 </td>
                                 <td>{product.stock}</td>
+                                <td className="text-center">
+                                    <div>
+                                        <Link to={`/edit/${product.id}`}
+                                        className="btn btn-warning btn-sm me-3">Edit
+
+                                        </Link>
+                                
+                                    </div>
+
+                                </td>
                             </tr>
                         ))
                     }
