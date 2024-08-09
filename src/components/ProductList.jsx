@@ -1,0 +1,74 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { NumericFormat } from 'react-number-format';
+
+function ProductList() {
+    const urlBase = 'http://localhost:8081/fi-app/products';
+    const [products, setProducts] = useState([]);
+
+    //useEfect, se llama cuando se carga la pag
+    useEffect(() => {
+        getAllProducts();
+
+    }, []);
+
+    const getAllProducts = async () => {
+        const result = await axios.get(urlBase);
+        console.log("Resultado de cargar empleados");
+        console.log(result.data);
+        setProducts(result.data);
+    }
+
+
+    return (
+        <div className='container'>
+            <div className='container text-center' style={{ margin: "30px" }}>
+                <h3>Inventory Management</h3>
+            </div>
+            <table className='table table-striped table-hover align-middle'>
+                <thead className='table-dark'>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Stock</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {
+                        //iteramos el array de productos
+                        products.map((product, index) => (
+                            <tr key={index}>
+                                <th scope='row'>{product.id}</th>
+                                <td>{product.name}</td>
+                                <td>{product.description}</td>
+                                <td>{product.category}</td>
+                                <td>
+                                    <NumericFormat
+                                        value={product.price}
+                                        displayType={'text'}
+                                        thousandSeparator=","
+                                        prefix={'$'}
+                                        decimalScale={2}
+                                        fixedDecimalScale
+                                    />
+
+
+                                </td>
+                                <td>{product.stock}</td>
+                            </tr>
+                        ))
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    )
+}
+
+export default ProductList
