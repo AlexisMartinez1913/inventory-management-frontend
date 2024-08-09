@@ -1,9 +1,13 @@
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
-import { useNavigate, useNavigation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useNavigation, useParams } from 'react-router-dom';
+
 
 function EditProduct() {
+
+    const urlBase = "http://localhost:8081/fi-app/products";
+    const {id} = useParams();
     //var de react router para volver al inicio
     let navigation = useNavigate();
     const [product, setProduct] = useState({
@@ -16,6 +20,15 @@ function EditProduct() {
 
     const{name, description, category, price, stock} = product;
 
+    useEffect(() => {
+        loadProduct();
+    }, [])
+
+    const loadProduct = async () => {
+        const result = await axios.get(`${urlBase}/${id}`)
+        setProduct(result.data);
+    }
+
     const onInputChange = (e) => {
         //spread operator.. expandir atributos
         setProduct({...product, [e.target.name]: e.target.value})
@@ -24,7 +37,7 @@ function EditProduct() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            const urlBase = "http://localhost:8081/fi-app/products";
+            //const urlBase = "http://localhost:8081/fi-app/products";
             await axios.post(urlBase, product);
             navigation('/');
         } catch (error) {
@@ -68,7 +81,7 @@ function EditProduct() {
                                     <input type="number" className="form-control" value={stock} onChange={(e) => onInputChange(e)} id="stock" name="stock" placeholder="Enter stock" required />
 
                                 </div>
-                                <div className='text-center'>
+                                <div className='text-center mb-2'>
                                     <button type="submit" className="btn btn-success btn-sm me-3">Save</button>
                                     <a href="/" className='btn btn-danger btn-sm'>Back</a>
                                 </div>
