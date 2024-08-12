@@ -15,9 +15,18 @@ function ProductList() {
 
     const getAllProducts = async () => {
         const result = await axios.get(urlBase);
-        console.log("Resultado de cargar empleados");
-        console.log(result.data);
+        //console.log("Resultado de cargar empleados");
+        //console.log(result.data);
         setProducts(result.data);
+    }
+
+    const deleteProduct = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete? ");
+        if (confirmDelete) {
+            await axios.delete(`${urlBase}/${id}`);
+            getAllProducts();
+        }
+        
     }
 
 
@@ -64,10 +73,13 @@ function ProductList() {
                                 <td className="text-center">
                                     <div>
                                         <Link to={`/edit/${product.id}`}
-                                        className="btn btn-warning btn-sm me-3">Edit
+                                            className="btn btn-warning btn-sm me-3">Edit
 
                                         </Link>
-                                
+                                        <button onClick={() => deleteProduct(product.id)}
+                                            className='btn btn-danger btn-sm'>
+                                            Delete</button>
+
                                     </div>
 
                                 </td>
