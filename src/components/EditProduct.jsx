@@ -38,7 +38,8 @@ function EditProduct() {
         e.preventDefault();
         try {
             //const urlBase = "http://localhost:8081/fi-app/products";
-            await axios.post(urlBase, product);
+            await axios.put(`${urlBase}/${id}`, product);
+            //redirigir a la pagina de inicio
             navigation('/');
         } catch (error) {
             console.error("There was an error adding the product!", error);
